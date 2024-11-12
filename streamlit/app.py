@@ -50,6 +50,9 @@ def input_prep(input_text):
     
     return input_text
 
+if "selected_model" not in st.session_state:
+    st.session_state.selected_model = ""
+
 tabs = st.tabs(["About", "Models"])
 
 
