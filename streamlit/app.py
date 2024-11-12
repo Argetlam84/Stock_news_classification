@@ -53,7 +53,7 @@ def input_prep(input_text):
     input_text = re.sub(r"\b(\d+(\.\d+)?%?)\b", r"\1", input_text)
     
     input_text = " ".join([word.text for word in nlp(input_text)
-                           if word.text.lower() not in stopWords and len(word.text) > 1])
+                           if word.text.lower() not in stopWords])
     
     input_text = input_text.strip()
     input_text = re.sub(r"\s+", " ", input_text)
