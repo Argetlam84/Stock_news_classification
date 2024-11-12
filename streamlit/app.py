@@ -27,7 +27,6 @@ from spacy.lang.en import English
 def load_basic_spacy_model():
 
     nlp = English()
-    nlp.add_pipe("tokenizer")
     return nlp
 
 
