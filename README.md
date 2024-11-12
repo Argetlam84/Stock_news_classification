@@ -30,13 +30,18 @@ The following Python libraries are required for the project:
 - `pandas`
 - `numpy`
 - `nltk`
-- `seaborn`
-- `matplotlib`
 - `scikit-learn`
+- `matplotlib`
+- `seaborn`
+- `spaCy`
 - `xgboost`
 - `optuna`
+- `imbalanced-learn`
+- `beautifulsoup4`
+- `selenium`
+- `webdriver-manager`
+- `tensorflow`
 - `streamlit`
-- `imblearn`
 
 To install requirements, run:
 ```bash
