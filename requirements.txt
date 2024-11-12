@@ -1,0 +1,15 @@
+pandas
+numpy
+nltk
+scikit-learn
+matplotlib
+seaborn
+spaCy
+Xgboost
+optuna
+imbalanced-learn
+beautifulsoup4
+selenium
+webdriver-manager
+tensorflow
+streamlit
