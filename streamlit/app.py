@@ -61,8 +61,8 @@ tabs = st.tabs(["About", "Models"])
 
 with tabs[0]:
     st.title("About")
-    #image_url = ""
-    #st.image(image_url, use_column_width=True)
+    image_url = "https://github.com/user-attachments/assets/8bc88860-2a1d-4ece-97e4-a30a494556a8"
+    st.image(image_url, use_column_width=True)
 
     st.write("""
     This project is an NLP-based system designed to classify stock market news and sentences into sentiment categories:
