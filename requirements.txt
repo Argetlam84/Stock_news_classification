@@ -14,4 +14,4 @@ webdriver-manager
 tensorflow
 streamlit
 wordcloud
-spacy[en_core_web_sm]
+./postSetup.sh
