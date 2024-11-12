@@ -21,24 +21,17 @@ from sklearn.metrics import RocCurveDisplay
 from sklearn.preprocessing import label_binarize
 import subprocess
 import sys
-from pathlib import Path
-from spacy.util import load_model_from_path
+from spacy.language import Language
+from spacy.lang.en import English
 
-@st.cache_resource
-def load_spacy_model():
-    try:
-        
-        return spacy.load("en_core_web_sm")
-    except OSError:
-        
-        subprocess.run([
-            sys.executable, 
-            "-m", "pip", "install", 
-            "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0.tar.gz"
-        ])
-        return spacy.load("en_core_web_sm")
-    
-nlp = load_spacy_model()   
+def load_basic_spacy_model():
+
+    nlp = English()
+    nlp.add_pipe("tokenizer")
+    return nlp
+
+
+nlp = load_basic_spacy_model()
 
 def f1_score(y_true, y_pred):
     y_true = K.cast(y_true, 'float32')  
