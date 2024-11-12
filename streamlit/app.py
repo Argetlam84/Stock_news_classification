@@ -27,12 +27,19 @@ from spacy.util import load_model_from_path
 @st.cache_resource
 def load_spacy_model():
     try:
+        
         return spacy.load("en_core_web_sm")
     except OSError:
-        subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+        
+        subprocess.run([
+            sys.executable, 
+            "-m", "pip", "install", 
+            "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0.tar.gz"
+        ])
         return spacy.load("en_core_web_sm")
-
+    
 nlp = load_spacy_model()   
+
 def f1_score(y_true, y_pred):
     y_true = K.cast(y_true, 'float32')  
     y_pred = tf.round(y_pred)
