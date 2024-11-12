@@ -50,12 +50,17 @@ def input_prep(input_text):
     
     return input_text
 
-
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+    nlp = spacy.load("en_core_web_sm")
 
 if "selected_model" not in st.session_state:
     st.session_state.selected_model = ""
 
 tabs = st.tabs(["About", "Models"])
+
 
 with tabs[0]:
     st.title("About")
