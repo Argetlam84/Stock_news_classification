@@ -24,9 +24,15 @@ import sys
 from pathlib import Path
 from spacy.util import load_model_from_path
 
-model_path = Path("models\en_core_web_sm\en_core_web_sm-3.8.0")
+@st.cache_resource
+def load_spacy_model():
+    try:
+        return spacy.load("en_core_web_sm")
+    except OSError:
+        subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+        return spacy.load("en_core_web_sm")
 
-    
+nlp = load_spacy_model()   
 def f1_score(y_true, y_pred):
     y_true = K.cast(y_true, 'float32')  
     y_pred = tf.round(y_pred)
@@ -46,7 +52,6 @@ def input_prep(input_text):
     input_text = re.sub(r"(?<!\d)[.,;:](?!\d)", "", input_text)
     input_text = re.sub(r"\b(\d+(\.\d+)?%?)\b", r"\1", input_text)
     
-    nlp = load_model_from_path(model_path)
     input_text = " ".join([word.text for word in nlp(input_text)
                            if word.text.lower() not in stopWords and len(word.text) > 1])
     
