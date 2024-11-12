@@ -21,6 +21,8 @@ from sklearn.metrics import RocCurveDisplay
 from sklearn.preprocessing import label_binarize
 import subprocess
 import sys
+from pathlib import Path
+from spacy.util import load_model_from_path
 
 model_path = Path("models/en_core_web_sm")
 
