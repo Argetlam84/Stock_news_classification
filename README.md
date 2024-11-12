@@ -2,6 +2,7 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/8bc88860-2a1d-4ece-97e4-a30a494556a8" alt="Image description" />
 </p>
+
 # Stock Analysis Project
 
 This project leverages natural language processing (NLP) and machine learning models to classify stock market news. It began with thousands of labeled sentences related to the stock market obtained from Hugging Face and evolved step-by-step by asking, "How can I take this further?" The result is an automated project scheduled to run on GitHub Actions.
