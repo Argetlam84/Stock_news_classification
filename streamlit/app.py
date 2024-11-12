@@ -22,6 +22,7 @@ from sklearn.preprocessing import label_binarize
 import subprocess
 import sys
 
+model_path = Path("models/en_core_web_sm")
 
     
 def f1_score(y_true, y_pred):
@@ -43,7 +44,7 @@ def input_prep(input_text):
     input_text = re.sub(r"(?<!\d)[.,;:](?!\d)", "", input_text)
     input_text = re.sub(r"\b(\d+(\.\d+)?%?)\b", r"\1", input_text)
     
-    nlp = spacy.load("models/en_core_web_sm")
+    nlp = load_model_from_path(model_path)
     input_text = " ".join([word.text for word in nlp(input_text)
                            if word.text.lower() not in stopWords and len(word.text) > 1])
     
