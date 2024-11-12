@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import re
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS as stopWords
-from wordcloud import WordCloud
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans

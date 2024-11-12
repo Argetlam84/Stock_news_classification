@@ -19,31 +19,34 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import roc_curve, auc
 from sklearn.metrics import RocCurveDisplay
 from sklearn.preprocessing import label_binarize
+import subprocess
+import sys
 
+@st.cache_resource
+def download_en_core_web_sm():
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+    return spacy.load("en_core_web_sm")
+    
 def f1_score(y_true, y_pred):
-        y_true = K.cast(y_true, 'float32')  
-        y_pred = tf.round(y_pred)
-        y_pred = K.cast(y_pred, 'float32')  
+    y_true = K.cast(y_true, 'float32')  
+    y_pred = tf.round(y_pred)
+    y_pred = K.cast(y_pred, 'float32')  
 
-        tp = K.sum(K.cast(y_true * y_pred, 'float32'), axis=0)
-        fp = K.sum(K.cast((1 - y_true) * y_pred, 'float32'), axis=0)
-        fn = K.sum(K.cast(y_true * (1 - y_pred), 'float32'), axis=0)
+    tp = K.sum(K.cast(y_true * y_pred, 'float32'), axis=0)
+    fp = K.sum(K.cast((1 - y_true) * y_pred, 'float32'), axis=0)
+    fn = K.sum(K.cast(y_true * (1 - y_pred), 'float32'), axis=0)
 
-        precision = tp / (tp + fp + K.epsilon())
-        recall = tp / (tp + fn + K.epsilon())
-        f1 = 2 * precision * recall / (precision + recall + K.epsilon())
-        return K.mean(f1)
-
+    precision = tp / (tp + fp + K.epsilon())
+    recall = tp / (tp + fn + K.epsilon())
+    f1 = 2 * precision * recall / (precision + recall + K.epsilon())
+    return K.mean(f1)
 
 def input_prep(input_text):
-   
     input_text = input_text.lower()
-    
     input_text = re.sub(r"(?<!\d)[.,;:](?!\d)", "", input_text)
-    
     input_text = re.sub(r"\b(\d+(\.\d+)?%?)\b", r"\1", input_text)
     
-    nlp = spacy.load("en_core_web_sm")
+    nlp = download_en_core_web_sm()
     input_text = " ".join([word.text for word in nlp(input_text)
                            if word.text.lower() not in stopWords and len(word.text) > 1])
     
@@ -55,14 +58,13 @@ def input_prep(input_text):
 if "selected_model" not in st.session_state:
     st.session_state.selected_model = ""
 
-
 tabs = st.tabs(["About", "Models"])
 
 
 with tabs[0]:
     st.title("About")
-    #image_url = ""
-    #st.image(image_url, use_column_width=True)
+    image_url = "https://github.com/user-attachments/assets/8bc88860-2a1d-4ece-97e4-a30a494556a8"
+    st.image(image_url, use_column_width=True)
 
     st.write("""
     This project is an NLP-based system designed to classify stock market news and sentences into sentiment categories:
@@ -84,7 +86,7 @@ with tabs[0]:
     This classification system aims to assist in tracking sentiment trends in the stock market, helping users make informed decisions based on news sentiment analysis.
     """)
 
-    labels = {0:"Negative", 1:"Neutral", 2:"Positive"}
+    labels = {0: "Negative", 1: "Neutral", 2: "Positive"}
 
 with tabs[1]:
     st.title("Models Overview")
@@ -94,10 +96,11 @@ with tabs[1]:
 
     st.sidebar.title("Navigation")
     st.session_state.selected_model = st.sidebar.selectbox(
-    "Select a Model",
-    ["", "Logistic Regression", "XGBRFClassifier", "LSTM"],
-    index=["", "Logistic Regression", "XGBRFClassifier", "LSTM"].index(st.session_state.selected_model) if st.session_state.selected_model in ["", "Logistic Regression", "XGBRFClassifier", "LSTM"] else 0
+        "Select a Model",
+        ["", "Logistic Regression", "XGBRFClassifier", "LSTM"],
+        index=["", "Logistic Regression", "XGBRFClassifier", "LSTM"].index(st.session_state.selected_model) if st.session_state.selected_model in ["", "Logistic Regression", "XGBRFClassifier", "LSTM"] else 0
     )
+
     vectorizer = joblib.load("models/vectorizer.pkl")
 
     if st.session_state.selected_model == "Logistic Regression":
@@ -109,12 +112,10 @@ with tabs[1]:
         if st.button("Predict"):
             if user_input:
                 cleaned_input = input_prep(user_input)
-                
                 X = vectorizer.transform([cleaned_input])
-
                 predicted = log_model.predict(X)
                 st.write(f"Predicted class: {labels[predicted[0]], int(predicted[0])}")
-    
+
     elif st.session_state.selected_model == "XGBRFClassifier":
         st.title("XGBRFClassifier")
 
@@ -124,12 +125,10 @@ with tabs[1]:
         if st.button("Predict"):
             if user_input:
                 cleaned_input = input_prep(user_input)
-
                 X = vectorizer.transform([cleaned_input])
-
                 predicted = xgb_model.predict(X)
                 st.write(f"Predicted class: {labels[predicted[0]], int(predicted[0])}")
-    
+
     elif st.session_state.selected_model == "LSTM":
         st.title("LSTM")
         st.write("""
@@ -138,40 +137,15 @@ with tabs[1]:
                 This re-training should help improve the model's performance and generalizability.
                 """)
 
-        lstm_model = load_model("models/lstm_model.keras", custom_objects={"f1_score":f1_score})
+        lstm_model = load_model("models/lstm_model.keras", custom_objects={"f1_score": f1_score})
         tokenizer = joblib.load("models/tokenizer.pkl")
         user_input = st.text_input("Enter text:")
         max_len = 100
+
         if st.button("Predict"):
             if user_input:
                 cleaned_input = input_prep(user_input)
-
-                X = tokenizer.texts_to_sequences(cleaned_input)
+                X = tokenizer.texts_to_sequences([cleaned_input])
                 X = pad_sequences(X, maxlen=max_len)
-
                 predicted = lstm_model.predict(X)
                 st.write(f"Predicted class: {labels[int(predicted[0][0])]}, {int(predicted[0][0])}")
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
