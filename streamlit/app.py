@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 from spacy.util import load_model_from_path
 
-model_path = Path("models/en_core_web_sm")
+model_path = Path("models\en_core_web_sm\en_core_web_sm-3.8.0")
 
     
 def f1_score(y_true, y_pred):
