@@ -1,4 +1,4 @@
-# Stock Sentiment Analysis Project
+# Stock Analysis Project
 
 This project leverages natural language processing (NLP) and machine learning models to classify stock market news. It began with thousands of labeled sentences related to the stock market obtained from Hugging Face and evolved step-by-step by asking, "How can I take this further?" The result is an automated project scheduled to run on GitHub Actions.
 
