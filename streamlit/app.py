@@ -22,6 +22,11 @@ from sklearn.preprocessing import label_binarize
 import subprocess
 import sys
 
+@st.cache_resource
+def download_en_core_web_sm():
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+    return spacy.load("en_core_web_sm")
+    
 def f1_score(y_true, y_pred):
     y_true = K.cast(y_true, 'float32')  
     y_pred = tf.round(y_pred)
@@ -41,7 +46,7 @@ def input_prep(input_text):
     input_text = re.sub(r"(?<!\d)[.,;:](?!\d)", "", input_text)
     input_text = re.sub(r"\b(\d+(\.\d+)?%?)\b", r"\1", input_text)
     
-    nlp = spacy.load("en_core_web_sm")
+    nlp = download_en_core_web_sm()
     input_text = " ".join([word.text for word in nlp(input_text)
                            if word.text.lower() not in stopWords and len(word.text) > 1])
     
