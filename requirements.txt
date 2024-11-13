@@ -14,3 +14,4 @@ webdriver-manager
 tensorflow
 streamlit
 wordcloud
+tensorflow-cpu
