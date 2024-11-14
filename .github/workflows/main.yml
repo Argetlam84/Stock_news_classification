@@ -1,5 +1,3 @@
-# This is a basic workflow that is manually triggered
-
 name: Run main.py every 4 hours
 
 on:
@@ -17,13 +15,23 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'  
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           python -m spacy download en_core_web_sm
-  
 
       - name: Run main.py
         run: python main.py
+
+      - name: Debug: Check clustered.csv content
+        run: cat datasets/clustered.csv
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add datasets/clustered.csv
+          git commit -m "Update clustered.csv from GitHub Actions"
+          git push
