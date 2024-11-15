@@ -23,7 +23,7 @@ def main():
         train_deep(final_data)
         
     else:
-        print("Training models function passed because it will be work on each month beginings")
+        print("Training models function skipped as it's not the 1st of the month")
 
 
 
