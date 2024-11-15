@@ -1,1 +1,4 @@
 nlpenv
+__pycache__
+.keras
+.pkl
