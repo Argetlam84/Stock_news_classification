@@ -30,6 +30,7 @@ def train_ml(data):
 
     data["label_name"] = data["label_name"].str.lower()
     data["text"] = data["text"].fillna("")
+    data = data.drop_duplicates(subset=["text"], keep="first")
     
     y_train = LabelEncoder().fit_transform(data["label_name"])
    
@@ -71,7 +72,8 @@ def train_deep(data):
 
     data["label_name"] = data["label_name"].str.lower()
     data["text"] = data["text"].fillna("")
-
+    data = data.drop_duplicates(subset=["text"], keep="first")
+    
     y_train = LabelEncoder().fit_transform(data["label_name"])
 
     def f1_score(y_true, y_pred):
