@@ -26,6 +26,7 @@ def fetch_data():
 
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
     options.add_argument("--ignore-certificate-errors")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("--no-sandbox")
@@ -35,6 +36,8 @@ def fetch_data():
 
     url = "https://finance.yahoo.com/topic/stock-market-news/"
     retry(driver.get, url)
+
+    print(driver.title)
 
     today = dt.datetime.today().strftime("%Y-%m-%d")
 
@@ -56,7 +59,7 @@ def fetch_data():
     for _ in range(5):
         scroll_down()
 
-    div_list = driver.find_elements(By.XPATH, "//*[contains(@class, 'content')]")
+    div_list = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(@class, 'content')]")))
     print(f"Total {len(div_list)} news found.")
 
     index = 0
