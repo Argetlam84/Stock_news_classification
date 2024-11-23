@@ -57,7 +57,8 @@ def fetch_data():
     for _ in range(5):
         scroll_down()
 
-    div_list = driver.find_elements(By.XPATH, "//*[@id='topic-stream']//*[@class='topic-stream']")
+    div_list = driver.find_elements(By.XPATH, "//*[contains(@class, 'content')]")
+    
     print(f"Total {len(div_list)} news found.")
 
     index = 0
