@@ -3,11 +3,11 @@
   <img src="https://github.com/user-attachments/assets/8bc88860-2a1d-4ece-97e4-a30a494556a8" alt="Image description" />
 </p>
 
-# Stock Analysis Project
+# Stock News Analysis Project
 
 This project leverages natural language processing (NLP) and machine learning models to classify stock market news. It began with thousands of labeled sentences related to the stock market obtained from Hugging Face and evolved step-by-step by asking, "How can I take this further?" The result is an automated project scheduled to run on GitHub Actions.
 
-## Project Structure
+## <a href="https://stocknewsclassification.streamlit.app/">Project</a> Structure
 
 The project is organized into several key folders, including **notebooks** and **models**:
 - **notebooks**: Contains experimental work and visualizations of analyses performed throughout the project. This folder may have a complex structure as it includes different model trials and detailed data inspections.
